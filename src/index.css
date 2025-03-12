@@ -44,3 +44,41 @@ main {
 #navbar a {
   text-decoration: none;
 }
+
+/* TASK LIST PAGE */
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: start;
+}
+
+th,
+td {
+  padding: 0.5rem 1rem;
+}
+
+tr:nth-child(even) {
+  background-color: #e4e4e4;
+}
+
+.task-id-table,
+.task-status-table {
+  text-align: center;
+}
+
+.task-status-table .fa-check {
+  color: green;
+}
+
+.task-status-table .fa-x {
+  color: red;
+}
+
+.task-status-table .fa-spinner {
+  color: rgb(226, 204, 2);
+}
