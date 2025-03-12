@@ -12,7 +12,7 @@ const useTasks = () => {
         /* console.log("taskListResponse", taskListResponse); */
         setTaskList(taskListResponse);
       } catch (err) {
-        console.error(err);
+        console.error("Errore:", err);
       }
     })();
   }, []);
