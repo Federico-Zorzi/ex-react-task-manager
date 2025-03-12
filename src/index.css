@@ -1,0 +1,46 @@
+:root {
+  --navbar-background: rgb(238, 238, 238);
+}
+
+/* RESET RULES */
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+body,
+ul {
+  margin: 0;
+}
+
+#wrapper {
+  margin: 0;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  margin: 0 200px;
+
+  flex-grow: 1;
+}
+
+/* NAVBAR */
+#navbar {
+  background-color: var(--navbar-background);
+  padding: 1rem 2rem;
+}
+
+#navbar ul {
+  list-style: none;
+  padding: 0;
+
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#navbar a {
+  text-decoration: none;
+}
