@@ -82,3 +82,50 @@ tr:nth-child(even) {
 .task-status-table .fa-spinner {
   color: rgb(226, 204, 2);
 }
+
+/* ADD TASK */
+
+.form-add-task {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-row {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.form-field {
+  flex: 1;
+}
+
+.form-field textarea {
+  resize: none;
+  height: 100px;
+}
+
+.form-input-field,
+#add-task-btn {
+  background-color: white;
+  border: 1px solid rgb(158, 157, 157);
+  border-radius: 5px;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+}
+
+.form-input-field {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#add-task-btn {
+  background-color: rgb(0, 122, 0);
+  color: white;
+}
+
+.error-validation-msg {
+  margin-top: 0.3rem;
+  color: red;
+}
