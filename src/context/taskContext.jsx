@@ -13,6 +13,9 @@ export const TaskContextProvider = ({ children }) => {
   const tasksContext = {
     test: "prova context",
     taskList,
+    addTask,
+    removeTask,
+    updateTask,
   };
 
   return (

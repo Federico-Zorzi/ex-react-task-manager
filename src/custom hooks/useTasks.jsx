@@ -17,11 +17,51 @@ const useTasks = () => {
     })();
   }, []);
 
-  const addTask = () => {};
+  const addTask = async ({ title, status, description }) => {
+    try {
+      const fetchAddTask = await fetch(`${apiUrl}/tasksaa`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          status,
+          description,
+        }),
+      });
+
+      if (!fetchAddTask.ok) {
+        throw new Error(`${fetchAddTask.status} - ${fetchAddTask.statusText}`);
+      }
+
+      const resAddTask = await fetchAddTask.json();
+
+      if (!resAddTask.success) {
+        throw new Error(resAddTask.message);
+      }
+
+      setTaskList((prevTaskList) => [...prevTaskList, resAddTask.task]);
+      return {
+        success: resAddTask.success,
+        message: "Task aggiunta con successo!",
+      };
+    } catch (err) {
+      /* console.error("Errore nell'aggiunta della task:", err.message); */
+      return {
+        success: false,
+        message: `Errore nell'aggiunta della task: ${err.message}`,
+      };
+    }
+  };
+
   const removeTask = () => {};
   const updateTask = () => {};
 
-  return { taskList, addTask, removeTask, updateTask };
+  return {
+    taskList,
+    addTask,
+    removeTask,
+    updateTask,
+  };
 };
 
 export default useTasks;

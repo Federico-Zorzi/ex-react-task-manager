@@ -1,7 +1,10 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useTaskContext } from "../context/taskContext";
 
 export default function AddTask() {
   const taskStatus = ["To do", "Doing", "Done"];
+  const { addTask } = useTaskContext();
+  const [operationMsg, setOperationMsg] = useState(null);
 
   const [nameTask, setNameTask] = useState("");
   const status = useRef("");
@@ -12,22 +15,31 @@ export default function AddTask() {
     return !nameTask.split("").some((l) => symbols.includes(l));
   }, [nameTask]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (nameTask && isValidNameTask) {
-      console.log("Nuova Task:", {
-        nameTask,
+    if (!nameTask || !isValidNameTask) return;
+
+    try {
+      const resAddTask = await addTask({
+        title: nameTask,
         status: status.current.value,
         description: description.current.value,
       });
+      console.log("Nuova Task aggiunta:", resAddTask);
+      setOperationMsg(resAddTask);
 
-      /* reset to default value */
-      setNameTask("");
-      status.current.value = "";
-      description.current.value = "";
-    } else console.error("Compilare tutti i campi nel modo corretto");
+      if (resAddTask.success) {
+        setNameTask("");
+        status.current.value = "";
+        description.current.value = "";
+      }
+    } catch (error) {
+      console.error("Errore durante l'aggiunta della task:", err);
+    }
   };
+
+  useEffect(() => setOperationMsg(null), []);
 
   return (
     <main>
@@ -95,6 +107,15 @@ export default function AddTask() {
             </button>
           </div>
         </form>
+
+        {operationMsg !== null ? (
+          <div
+            id="operation-message"
+            className={operationMsg.success ? "success" : "failed"}
+          >
+            <p className="add-task-message">{operationMsg.message}</p>
+          </div>
+        ) : null}
       </section>
     </main>
   );
