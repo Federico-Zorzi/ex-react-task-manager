@@ -26,7 +26,7 @@ export default function AddTask() {
         status: status.current.value,
         description: description.current.value,
       });
-      console.log("Nuova Task aggiunta:", resAddTask);
+      /* console.log("Nuova Task aggiunta:", resAddTask); */
       setOperationMsg(resAddTask);
 
       if (resAddTask.success) {
@@ -113,7 +113,7 @@ export default function AddTask() {
             id="operation-message"
             className={operationMsg.success ? "success" : "failed"}
           >
-            <p className="add-task-message">{operationMsg.message}</p>
+            <p className="task-message">{operationMsg.message}</p>
           </div>
         ) : null}
       </section>

@@ -19,7 +19,7 @@ const useTasks = () => {
 
   const addTask = async ({ title, status, description }) => {
     try {
-      const fetchAddTask = await fetch(`${apiUrl}/tasksaa`, {
+      const fetchAddTask = await fetch(`${apiUrl}/tasks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -30,13 +30,18 @@ const useTasks = () => {
       });
 
       if (!fetchAddTask.ok) {
-        throw new Error(`${fetchAddTask.status} - ${fetchAddTask.statusText}`);
+        throw new Error(
+          `Errore nella comunicazione con il server: ${fetchAddTask.status} - ${fetchAddTask.statusText}`
+        );
       }
 
       const resAddTask = await fetchAddTask.json();
 
       if (!resAddTask.success) {
-        throw new Error(resAddTask.message);
+        throw new Error(
+          resAddTask.message ||
+            "Non è stato possibile aggiungere una nuova task"
+        );
       }
 
       setTaskList((prevTaskList) => [...prevTaskList, resAddTask.task]);
@@ -48,12 +53,51 @@ const useTasks = () => {
       /* console.error("Errore nell'aggiunta della task:", err.message); */
       return {
         success: false,
-        message: `Errore nell'aggiunta della task: ${err.message}`,
+        message: err.message,
       };
     }
   };
 
-  const removeTask = () => {};
+  const removeTask = async (taskId) => {
+    const taskSelected = taskList.filter((t) => taskId === t.id);
+
+    try {
+      const fetchRemoveTask = await fetch(`${apiUrl}/tasks/${taskId}`, {
+        method: "DELETE",
+      });
+
+      if (!fetchRemoveTask.ok) {
+        throw new Error(
+          `Errore nella comunicazione con il server: ${fetchRemoveTask.status} - ${fetchRemoveTask.statusText}`
+        );
+      }
+
+      const resRemove = await fetchRemoveTask.json();
+
+      if (!resRemove.success) {
+        throw new Error("Non è stato possibile eliminare la seguente task");
+      }
+
+      alert(
+        `Task "${taskSelected[0].title}" n°${taskId} è stata eliminata con successo...`
+      );
+      setTaskList((prevTaskList) =>
+        prevTaskList.filter((t) => t.id !== taskId)
+      );
+
+      return {
+        success: resRemove.success,
+        message: "Task Eliminata con successo!",
+      };
+    } catch (err) {
+      /* console.error("Errore:", err.message); */
+      return {
+        success: false,
+        message: err.message,
+      };
+    }
+  };
+
   const updateTask = () => {};
 
   return {

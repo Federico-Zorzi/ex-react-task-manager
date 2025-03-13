@@ -4,6 +4,7 @@ import TaskRow from "../components/TaskRow";
 
 export default function TaskList() {
   const { taskList } = useTaskContext();
+  /* console.log("taskList", taskList); */
 
   return (
     <main>
