@@ -9,13 +9,20 @@ const NavBar = memo(() => {
 
   return (
     <nav id="navbar">
-      <ul>
-        {pagesLinks.map((link, i) => (
-          <NavLink key={i} to={link.path}>
-            <li>{link.linkName}</li>
-          </NavLink>
-        ))}
-      </ul>
+      <div id="logo">
+        <NavLink to={"/"}>
+          <i className="fa-solid fa-list-check fa-xl"></i>
+        </NavLink>
+      </div>
+      <div id="links">
+        <ul>
+          {pagesLinks.map((link, i) => (
+            <NavLink key={i} to={link.path}>
+              <li>{link.linkName}</li>
+            </NavLink>
+          ))}
+        </ul>
+      </div>
     </nav>
   );
 });

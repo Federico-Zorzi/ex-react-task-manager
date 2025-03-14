@@ -34,10 +34,20 @@ a {
 /* NAVBAR */
 #navbar {
   background-color: var(--navbar-background);
-  padding: 1rem 2rem;
+  padding: 1rem 1rem;
+
+  display: flex;
 }
 
-#navbar ul {
+#navbar #logo {
+  color: #205c0e;
+}
+
+#navbar #links {
+  flex: 1;
+}
+
+#navbar #links ul {
   list-style: none;
   padding: 0;
 
