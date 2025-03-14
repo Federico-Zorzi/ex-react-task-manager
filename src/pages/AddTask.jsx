@@ -47,7 +47,7 @@ export default function AddTask() {
 
       <section>
         {/* NEW TASK FORM */}
-        <form className="form-add-task" onSubmit={handleSubmit}>
+        <form className="form-task" onSubmit={handleSubmit}>
           <div className="form-row">
             {/* NAME */}
             <div className="form-field">

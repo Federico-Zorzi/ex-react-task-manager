@@ -6,28 +6,38 @@ const Modal = ({
   show = false,
   onClose = () => {},
   onConfirm = () => {},
-  confirmText = "Conferma",
+  confirmButton = {
+    confirmText: "Conferma",
+    confirmColor: "grey",
+    buttonType: "button",
+    buttonForm: "",
+  },
 }) => {
   return createPortal(
     <div className={`modal${show ? " show" : ""}`}>
-      <section className="modal-content">
+      <div className="modal-container">
         <span className="close" title="Close Modal" onClick={onClose}>
           ×
         </span>
-        <div className="modal-container">
-          <h2>{title}</h2>
-          <p>{content}</p>
 
-          <div className="modal-btn">
-            <button type="button" className="cancelbtn" onClick={onClose}>
-              Annulla
-            </button>
-            <button type="button" className="deletebtn" onClick={onConfirm}>
-              {confirmText}
-            </button>
-          </div>
+        <h2>{title}</h2>
+        <div id="modal-content">{content}</div>
+
+        <div className="modal-btn">
+          <button type="button" className="cancelbtn" onClick={onClose}>
+            Annulla
+          </button>
+          <button
+            type={confirmButton.buttonType}
+            form={confirmButton.buttonForm}
+            className="confirmbtn"
+            onClick={onConfirm}
+            style={{ backgroundColor: confirmButton.confirmColor }}
+          >
+            {confirmButton.confirmText}
+          </button>
         </div>
-      </section>
+      </div>
     </div>,
     document.body
   );
