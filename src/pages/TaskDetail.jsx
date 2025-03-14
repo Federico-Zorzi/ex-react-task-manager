@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useTaskContext } from "../context/taskContext";
 import { useEffect, useState } from "react";
+import Modal from "../components/Modal";
 
 const TaskDetail = () => {
   const { id } = useParams();
@@ -10,8 +11,8 @@ const TaskDetail = () => {
     taskList.find((t) => parseInt(id) === t.id)
   );
   const [operationMsg, setOperationMsg] = useState(null);
-  /* 
-  const [isModalOpen, setIsModalOpen] = useState(false); */
+
+  const [isShow, setIsShow] = useState(false);
 
   const handleTaskDelete = async (id) => {
     try {
@@ -45,7 +46,7 @@ const TaskDetail = () => {
             <p>{taskSelected.description}</p>
           </div>
           <div id="detail-card-footer">
-            <button onClick={() => handleTaskDelete(id)}>
+            <button onClick={() => setIsShow(true)}>
               <i className="fa-solid fa-trash fa-lg"></i>
             </button>
           </div>
@@ -57,6 +58,17 @@ const TaskDetail = () => {
           </div>
         ) : null}
       </section>
+
+      <Modal
+        title={"Elimina task"}
+        content={"Vuoi Eliminare la task selezionata?"}
+        show={isShow}
+        onClose={() => setIsShow(false)}
+        onConfirm={() => {
+          handleTaskDelete(id);
+          setIsShow(false);
+        }}
+      />
     </main>
   );
 };

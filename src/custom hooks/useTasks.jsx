@@ -75,7 +75,7 @@ const useTasks = () => {
       const resRemove = await fetchRemoveTask.json();
 
       if (!resRemove.success) {
-        throw new Error("Non è stato possibile eliminare la seguente task");
+        throw new Error("Non è stato possibile eliminare la seguente task!");
       }
 
       alert(
