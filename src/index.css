@@ -57,6 +57,19 @@ a {
 }
 
 /* TASK LIST PAGE */
+#main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#searchbar input {
+  border-radius: 10px;
+  border: 1px solid black;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
 table,
 th,
 td {
@@ -66,6 +79,11 @@ td {
 
 th {
   text-align: start;
+  cursor: pointer;
+}
+
+th:hover {
+  background-color: #e8e8e8;
 }
 
 th,
