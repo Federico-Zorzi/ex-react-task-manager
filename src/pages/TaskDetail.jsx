@@ -17,7 +17,6 @@ const TaskDetail = () => {
 
     setTaskSelected(taskList.find((t) => parseInt(id) === t.id) || null);
   }, [id, taskList]);
-  console.log(taskSelected);
 
   const [operationMsg, setOperationMsg] = useState(null);
 
@@ -43,7 +42,6 @@ const TaskDetail = () => {
 
     try {
       const resUpdateTask = await updateTask(taskUpdated, taskId);
-      console.log("Task modificata:", resUpdateTask);
 
       setOperationMsg(resUpdateTask);
     } catch (err) {

@@ -1,20 +1,56 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 const useTasks = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const [taskList, setTaskList] = useState();
+
+  function reducerTasks(taskList, action) {
+    switch (action.type) {
+      case "SET_TASKS":
+        return action.payload;
+
+      case "ADD_TASK":
+        return [...taskList, action.payload];
+
+      case "REMOVE_TASK":
+        return taskList.filter((t) => t.id !== action.payload);
+
+      case "UPDATE_TASK":
+        const { id, taskModified } = action.payload;
+        let updateTask = [...taskList];
+
+        const findTaskIndex = updateTask.findIndex((t) => t.id === id);
+
+        updateTask[findTaskIndex] = {
+          ...updateTask[findTaskIndex],
+          title: taskModified.task.title,
+          status: taskModified.task.status,
+          description: taskModified.task.description,
+        };
+
+        return updateTask;
+
+      case "REMOVE_MULTIPLE_TASKS":
+        return taskList.filter((t) => !action.payload.includes(t.id));
+
+      default:
+        return taskList;
+    }
+  }
+
+  const [taskList, dispatch] = useReducer(reducerTasks, []);
 
   useEffect(() => {
-    (async () => {
+    const fetchTasks = async () => {
       try {
         const fetchTaskList = await fetch(`${apiUrl}/tasks`);
         const taskListResponse = await fetchTaskList.json();
         /* console.log("taskListResponse", taskListResponse); */
-        setTaskList(taskListResponse);
+        dispatch({ type: "SET_TASKS", payload: taskListResponse });
       } catch (err) {
         console.error("Errore:", err);
       }
-    })();
+    };
+    fetchTasks();
   }, []);
 
   const addTask = async ({ title, status, description }) => {
@@ -54,13 +90,12 @@ const useTasks = () => {
         );
       }
 
-      setTaskList((prevTaskList) => [...prevTaskList, resAddTask.task]);
+      dispatch({ type: "ADD_TASK", payload: resAddTask.task });
       return {
         success: resAddTask.success,
         message: "Task aggiunta con successo!",
       };
     } catch (err) {
-      /* console.error("Errore nell'aggiunta della task:", err.message); */
       return {
         success: false,
         message: err.message,
@@ -91,9 +126,8 @@ const useTasks = () => {
       alert(
         `Task "${taskSelected[0].title}" n°${taskId} è stata eliminata con successo...`
       );
-      setTaskList((prevTaskList) =>
-        prevTaskList.filter((t) => t.id !== taskId)
-      );
+
+      dispatch({ type: "REMOVE_TASK", payload: taskId });
 
       return {
         success: resRemove.success,
@@ -114,8 +148,9 @@ const useTasks = () => {
       if (
         taskList.some(
           (t) =>
+            t.id !== id &&
             t.title.toLowerCase().trim() ===
-            taskUpdated.title.toLowerCase().trim()
+              taskUpdated.title.toLowerCase().trim()
         )
       ) {
         throw new Error(
@@ -135,32 +170,20 @@ const useTasks = () => {
         );
       }
 
-      const resUpdateTask = await fetchUpdateTask.json();
+      const taskModified = await fetchUpdateTask.json();
 
-      if (!resUpdateTask.success) {
+      if (!taskModified.success) {
         throw new Error(
-          resUpdateTask.message ||
+          taskModified.message ||
             "Non è stato possibile modificare la task selezionata!"
         );
       } else {
-        setTaskList((prevTaskList) => {
-          let updateTask = [...prevTaskList];
-          const findTaskIndex = updateTask.findIndex((t) => t.id === id);
-          /* console.log("findTaskIndex", findTaskIndex); */
+        dispatch({ type: "UPDATE_TASK", payload: { id, taskModified } });
 
-          updateTask[findTaskIndex] = {
-            ...updateTask[findTaskIndex],
-            title: resUpdateTask.task.title,
-            status: resUpdateTask.task.status,
-            description: resUpdateTask.task.description,
-          };
-
-          return updateTask;
-        });
         return {
-          success: resUpdateTask.success,
-          message: "Task modificata con successo!",
-          task: resUpdateTask.task,
+          success: taskModified.success,
+          message: "ta con successo!",
+          task: taskModified.task,
         };
       }
     } catch (err) {
@@ -191,9 +214,7 @@ const useTasks = () => {
         (id, i) => result[i].status === "rejected"
       );
 
-      setTaskList((prevTaskList) =>
-        prevTaskList.filter((t) => !idFulfilled.includes(t.id))
-      );
+      dispatch({ type: "REMOVE_MULTIPLE_TASKS", payload: idFulfilled });
 
       alert(
         `Risultato eliminazione tasks:\n\n` +

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Modal from "./Modal";
 
 const EditTaskModal = ({
@@ -13,6 +13,30 @@ const EditTaskModal = ({
   const [descriptionUpdated, setDescriptionUpdated] = useState(
     task.description
   );
+  const isValidNameTask = useMemo(() => {
+    const symbols = "!@#$%^&*()-_=+[]{}|;:'\\\",.<>?/`~";
+    return (
+      !nameUpdated.split("").some((l) => symbols.includes(l)) &&
+      nameUpdated.length > 0
+    );
+  }, [nameUpdated]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!isValidNameTask) return;
+
+    onSave(
+      e,
+      {
+        title: nameUpdated,
+        status: statusUpdated,
+        description: descriptionUpdated,
+      },
+      task.id
+    );
+    onClose();
+  };
 
   return (
     <Modal
@@ -21,18 +45,7 @@ const EditTaskModal = ({
         <form
           id="form-modal"
           className="form-task"
-          onSubmit={(e) => {
-            onSave(
-              e,
-              {
-                title: nameUpdated,
-                status: statusUpdated,
-                description: descriptionUpdated,
-              },
-              task.id
-            );
-            onClose();
-          }}
+          onSubmit={(e) => handleSubmit(e)}
         >
           <div className="form-row">
             {/* NAME */}
@@ -47,11 +60,12 @@ const EditTaskModal = ({
                 placeholder="Inserisci una nuova task..."
                 required
               />
-              {/* {!isValidNameTask && (
+              {!isValidNameTask && (
                 <p className="error-validation-msg">
-                  Il nome della task non può contenere caratteri speciali.
+                  Il nome della task non può essere vuoto o contenere caratteri
+                  speciali.
                 </p>
-              )} */}
+              )}
             </div>
 
             <div className="form-field">

@@ -63,7 +63,8 @@ export default function AddTask() {
               />
               {!isValidNameTask && (
                 <p className="error-validation-msg">
-                  Il nome della task non può contenere caratteri speciali.
+                  Il nome della task non può essere vuoto o contenere caratteri
+                  speciali.
                 </p>
               )}
             </div>
