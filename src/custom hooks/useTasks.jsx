@@ -19,6 +19,16 @@ const useTasks = () => {
 
   const addTask = async ({ title, status, description }) => {
     try {
+      if (
+        taskList.some(
+          (t) => t.title.toLowerCase().trim() === title.toLowerCase().trim()
+        )
+      ) {
+        throw new Error(
+          `Il nome della task è uguale a quello di un'altra task già presente nella lista...`
+        );
+      }
+
       const fetchAddTask = await fetch(`${apiUrl}/tasks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -101,6 +111,18 @@ const useTasks = () => {
   const updateTask = async (taskUpdated, id) => {
     /* console.log("Update task", taskUpdated, id); */
     try {
+      if (
+        taskList.some(
+          (t) =>
+            t.title.toLowerCase().trim() ===
+            taskUpdated.title.toLowerCase().trim()
+        )
+      ) {
+        throw new Error(
+          `Il nome della task è uguale a quello di un'altra task già presente nella lista...`
+        );
+      }
+
       const fetchUpdateTask = await fetch(`${apiUrl}/tasks/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
