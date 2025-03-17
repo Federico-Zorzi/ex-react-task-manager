@@ -53,7 +53,7 @@ a {
 
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 /* TASK LIST PAGE */
@@ -110,6 +110,22 @@ tr:nth-child(even) {
 
 .fa-spinner {
   color: rgb(226, 204, 2);
+}
+
+[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #555;
+  border-radius: 10px;
+  background-color: white;
+  cursor: pointer;
+}
+
+#multiple-delete-btn {
+  text-align: center;
+  background-color: #db4040;
+  color: white;
+  cursor: pointer;
 }
 
 /* ADD TASK */

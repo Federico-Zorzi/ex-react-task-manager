@@ -8,7 +8,8 @@ export const useTaskContext = () => useContext(TasksContext);
 
 //* export context for provider
 export const TaskContextProvider = ({ children }) => {
-  const { taskList, addTask, removeTask, updateTask } = useTasks();
+  const { taskList, addTask, removeTask, updateTask, removeMultipleTasks } =
+    useTasks();
 
   const formatStatusDesign = (status) => {
     switch (status) {
@@ -29,6 +30,7 @@ export const TaskContextProvider = ({ children }) => {
     addTask,
     removeTask,
     updateTask,
+    removeMultipleTasks,
     formatStatusDesign,
   };
 

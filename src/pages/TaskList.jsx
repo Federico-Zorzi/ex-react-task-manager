@@ -1,5 +1,5 @@
 import { useTaskContext } from "../context/taskContext";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import TaskRow from "../components/TaskRow";
 
@@ -14,7 +14,7 @@ const debounce = (callback, delay) => {
 };
 
 export default function TaskList() {
-  const { taskList } = useTaskContext();
+  const { taskList, removeMultipleTasks } = useTaskContext();
   /* console.log("taskList", taskList); */
 
   const [sortBy, setSortBy] = useState("createdAt");
@@ -102,6 +102,28 @@ export default function TaskList() {
     []
   );
 
+  const [checked, setChecked] = useState(() =>
+    new Array(taskList?.length ?? 0).fill(false)
+  );
+  const [selectedTaskIds, setSelectedTaskIds] = useState([]);
+
+  useEffect(() => {
+    setChecked(new Array(taskList?.length ?? 0).fill(false));
+    setSelectedTaskIds([]);
+  }, [taskList, sortBy]);
+
+  const onToggle = (i) => {
+    setChecked((currVal) => currVal.map((c, index) => (index === i ? !c : c)));
+  };
+
+  const toggleSelection = (taskId) => {
+    setSelectedTaskIds((currVal) =>
+      currVal.includes(taskId)
+        ? currVal.filter((v) => v !== taskId)
+        : [...currVal, taskId]
+    );
+  };
+
   return (
     <main>
       <div id="main-header">
@@ -123,6 +145,17 @@ export default function TaskList() {
         <table>
           <thead>
             <tr>
+              {selectedTaskIds.length > 0 ? (
+                <th
+                  type="button"
+                  id="multiple-delete-btn"
+                  onClick={() => removeMultipleTasks(selectedTaskIds)}
+                >
+                  <i className="fa-solid fa-trash fa-lg"></i>
+                </th>
+              ) : (
+                <th></th>
+              )}
               <th type="button" onClick={() => handleSort("id")}>
                 Id{" "}
                 {sortBy === "id" && (
@@ -176,7 +209,14 @@ export default function TaskList() {
 
           <tbody>
             {tasksOrdered.map((t, i) => (
-              <TaskRow key={i} {...t} />
+              <TaskRow
+                key={i}
+                {...t}
+                index={i}
+                checked={checked[i] || false}
+                onToggle={onToggle}
+                toggleSelection={toggleSelection}
+              />
             ))}
           </tbody>
         </table>

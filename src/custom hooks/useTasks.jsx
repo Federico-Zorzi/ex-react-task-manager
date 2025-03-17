@@ -150,11 +150,53 @@ const useTasks = () => {
     }
   };
 
+  const removeMultipleTasks = async (idList) => {
+    try {
+      let promises = idList.map((id) =>
+        fetch(`${apiUrl}/tasks/${id}`, { method: "DELETE" }).then((res) => {
+          if (!res.ok) {
+            throw new Error(`HTTP Error ${res.status} - ${res.statusText}`);
+          }
+        })
+      );
+      const result = await Promise.allSettled(promises);
+
+      const idFulfilled = idList.filter(
+        (id, i) => result[i].status === "fulfilled"
+      );
+
+      const idRejected = idList.filter(
+        (id, i) => result[i].status === "rejected"
+      );
+
+      setTaskList((prevTaskList) =>
+        prevTaskList.filter((t) => !idFulfilled.includes(t.id))
+      );
+
+      alert(
+        `Risultato eliminazione tasks:\n\n` +
+          (idFulfilled.length > 0
+            ? `✅ Tasks eliminate con successo: ${idFulfilled
+                .sort((a, b) => a - b)
+                .join(", ")}\n`
+            : "⚠️ Nessuna task eliminata con successo.\n") +
+          (idRejected.length > 0
+            ? `❌ Tasks non eliminate: ${idRejected
+                .sort((a, b) => a - b)
+                .join(", ")}`
+            : "🎉 Tutte le tasks sono state eliminate con successo!")
+      );
+    } catch (err) {
+      console.log("Messaggio di errore", err.message);
+    }
+  };
+
   return {
     taskList,
     addTask,
     removeTask,
     updateTask,
+    removeMultipleTasks,
   };
 };
 
