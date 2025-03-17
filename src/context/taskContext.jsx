@@ -1,4 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import dayjs from "dayjs";
+
 import useTasks from "../custom hooks/useTasks";
 
 const TasksContext = createContext();
@@ -24,6 +26,10 @@ export const TaskContextProvider = ({ children }) => {
     }
   };
 
+  const formatDate = (date) => {
+    return dayjs(date).format("DD/MM/YYYY - hh:mm:ss");
+  };
+
   const tasksContext = {
     test: "prova context",
     taskList,
@@ -32,6 +38,7 @@ export const TaskContextProvider = ({ children }) => {
     updateTask,
     removeMultipleTasks,
     formatStatusDesign,
+    formatDate,
   };
 
   return (

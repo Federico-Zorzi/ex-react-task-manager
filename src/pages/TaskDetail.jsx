@@ -8,7 +8,7 @@ import EditTaskModal from "../components/EditTaskModal";
 const TaskDetail = () => {
   const { id } = useParams();
   let navigate = useNavigate();
-  const { taskList, removeTask, updateTask, formatStatusDesign } =
+  const { taskList, removeTask, updateTask, formatStatusDesign, formatDate } =
     useTaskContext();
 
   const [taskSelected, setTaskSelected] = useState(null);
@@ -17,6 +17,7 @@ const TaskDetail = () => {
 
     setTaskSelected(taskList.find((t) => parseInt(id) === t.id) || null);
   }, [id, taskList]);
+  console.log(taskSelected);
 
   const [operationMsg, setOperationMsg] = useState(null);
 
@@ -60,9 +61,13 @@ const TaskDetail = () => {
           <section>
             <div id="detail-card">
               <div id="detail-card-head">
-                <h2>
-                  {formatStatusDesign(taskSelected.status)} {taskSelected.title}
-                </h2>
+                <div>
+                  <h2>
+                    {formatStatusDesign(taskSelected.status)}{" "}
+                    {taskSelected.title}
+                  </h2>
+                </div>
+                <div id="date">{formatDate(taskSelected.createdAt)}</div>
               </div>
               <div id="detail-card-body">
                 <p>{taskSelected.description}</p>

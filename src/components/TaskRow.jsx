@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useTaskContext } from "../context/taskContext";
 
 const TaskRow = memo(({ index, checked, onToggle, toggleSelection, ...t }) => {
-  const { formatStatusDesign } = useTaskContext();
+  const { formatStatusDesign, formatDate } = useTaskContext();
 
   return (
     <tr>
@@ -22,7 +22,7 @@ const TaskRow = memo(({ index, checked, onToggle, toggleSelection, ...t }) => {
         <Link to={`/task/${t.id}`}>{t.title}</Link>
       </td>
       <td className="task-status-table">{formatStatusDesign(t.status)}</td>
-      <td>{t.createdAt}</td>
+      <td>{formatDate(t.createdAt)}</td>
     </tr>
   );
 });

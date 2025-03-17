@@ -203,8 +203,18 @@ tr:nth-child(even) {
   flex-direction: column;
 }
 
+#detail-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 #detail-card-head h2 {
   margin: 0;
+}
+
+#detail-card-head #date {
+  font-size: 1.2rem;
 }
 
 #detail-card-footer {
