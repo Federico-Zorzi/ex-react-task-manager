@@ -17,8 +17,8 @@ const TaskRow = memo(({ index, checked, onToggle, toggleSelection, ...t }) => {
           }}
         />
       </td>
-      <td className="task-id-table">{t.id}</td>
-      <td>
+      {/* <td className="task-id-table">{t.id}</td> */}
+      <td className="title">
         <Link to={`/task/${t.id}`}>{t.title}</Link>
       </td>
       <td className="task-status-table">{formatStatusDesign(t.status)}</td>

@@ -103,7 +103,7 @@ export default function AddTask() {
           </div>
 
           <div className="form-row">
-            <button type="submit" id="add-task-btn">
+            <button type="submit" id="add-task-btn" disabled={!isValidNameTask}>
               Aggiungi Task
             </button>
           </div>

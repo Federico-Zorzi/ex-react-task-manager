@@ -1,5 +1,5 @@
 :root {
-  --navbar-background: rgb(238, 238, 238);
+  --main-color-background: rgb(19, 187, 184);
 }
 
 /* RESET RULES */
@@ -33,7 +33,8 @@ a {
 
 /* NAVBAR */
 #navbar {
-  background-color: var(--navbar-background);
+  background-color: var(--main-color-background);
+  color: white;
   padding: 1rem 1rem;
 
   display: flex;
@@ -44,7 +45,11 @@ a {
 }
 
 #navbar #links {
+  font-weight: 700;
   flex: 1;
+}
+#navbar .active {
+  color: rgb(233, 255, 253);
 }
 
 #navbar #links ul {
@@ -78,17 +83,26 @@ td {
 }
 
 th {
+  background-color: var(--main-color-background);
+  color: white;
   text-align: start;
   cursor: pointer;
 }
 
 th:hover {
-  background-color: #e8e8e8;
+  background-color: #87b9ad;
 }
 
 th,
 td {
   padding: 0.5rem 1rem;
+}
+
+td.title {
+  max-width: 250px; /* Imposta una larghezza massima */
+  overflow: hidden; /* Nasconde il contenuto in eccesso */
+  text-overflow: ellipsis; /* Aggiunge i "..." quando il testo è troppo lungo */
+  white-space: nowrap;
 }
 
 tr:nth-child(even) {
@@ -160,6 +174,11 @@ tr:nth-child(even) {
   font-size: 1rem;
 }
 
+#add-task-btn:disabled {
+  background-color: #c3d5be;
+  border: 1px solid rgb(252, 251, 251);
+}
+
 .form-input-field {
   width: 100%;
   box-sizing: border-box;
@@ -194,7 +213,7 @@ tr:nth-child(even) {
 
 /* TASK DETAIL */
 #detail-card {
-  background-color: #b1a99f;
+  background-color: #dbc4a6;
   color: white;
   border-radius: 10px;
   padding: 1rem;
@@ -205,11 +224,14 @@ tr:nth-child(even) {
 
 #detail-card-head {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
 }
 
 #detail-card-head h2 {
+  max-width: 100%;
+  word-break: break-word;
   margin: 0;
 }
 

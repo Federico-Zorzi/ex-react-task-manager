@@ -156,7 +156,9 @@ export default function TaskList() {
               ) : (
                 <th></th>
               )}
-              <th type="button" onClick={() => handleSort("id")}>
+
+              {/* id column */}
+              {/* <th type="button" onClick={() => handleSort("id")}>
                 Id{" "}
                 {sortBy === "id" && (
                   <span>
@@ -167,7 +169,9 @@ export default function TaskList() {
                     ></i>
                   </span>
                 )}
-              </th>
+              </th> */}
+
+              {/* title column */}
               <th type="button" onClick={() => handleSort("title")}>
                 Titolo{" "}
                 {sortBy === "title" && (
@@ -180,6 +184,8 @@ export default function TaskList() {
                   </span>
                 )}
               </th>
+
+              {/* status column */}
               <th type="button" onClick={() => handleSort("status")}>
                 Stato{" "}
                 {sortBy === "status" && (
@@ -192,6 +198,8 @@ export default function TaskList() {
                   </span>
                 )}
               </th>
+
+              {/* createdAt column */}
               <th type="button" onClick={() => handleSort("createdAt")}>
                 Data di creazione{" "}
                 {sortBy === "createdAt" && (
