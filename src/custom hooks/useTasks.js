@@ -202,9 +202,12 @@ const useTasks = () => {
           if (!res.ok) {
             throw new Error(`HTTP Error ${res.status} - ${res.statusText}`);
           }
+
+          console.log("promises", promises);
         })
       );
       const result = await Promise.allSettled(promises);
+      console.log("result", result);
 
       const idFulfilled = idList.filter(
         (id, i) => result[i].status === "fulfilled"

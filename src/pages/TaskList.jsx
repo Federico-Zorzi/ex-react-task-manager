@@ -2,13 +2,14 @@ import { useTaskContext } from "../context/taskContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import TaskRow from "../components/TaskRow";
+import Modal from "../components/Modal";
 
 const debounce = (callback, delay) => {
   let timer;
-  return (value) => {
+  return (...value) => {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      callback(value);
+      callback(...value);
     }, delay);
   };
 };
@@ -20,6 +21,8 @@ export default function TaskList() {
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
 
   const tasksOrdered = useMemo(() => {
     /* console.log("Ordino per:", sortBy); */
@@ -141,7 +144,7 @@ export default function TaskList() {
       </div>
 
       {/* TASK LIST TABLE */}
-      {taskList && (
+      {taskList.length > 0 ? (
         <table>
           <thead>
             <tr>
@@ -149,7 +152,10 @@ export default function TaskList() {
                 <th
                   type="button"
                   id="multiple-delete-btn"
-                  onClick={() => removeMultipleTasks(selectedTaskIds)}
+                  onClick={() => {
+                    setIsShowDeleteModal(true);
+                    /*  */
+                  }}
                 >
                   <i className="fa-solid fa-trash fa-lg"></i>
                 </th>
@@ -228,7 +234,25 @@ export default function TaskList() {
             ))}
           </tbody>
         </table>
+      ) : (
+        <p>Nessuna task trovata...</p>
       )}
+
+      <Modal
+        title={"Elimina task"}
+        content={"Vuoi eliminare le task selezionate?"}
+        show={isShowDeleteModal}
+        onClose={() => setIsShowDeleteModal(false)}
+        onConfirm={() => {
+          removeMultipleTasks(selectedTaskIds);
+          setIsShowDeleteModal(false);
+        }}
+        confirmButton={{
+          confirmText: "Conferma",
+          confirmColor: "#f44336",
+          buttonType: "button",
+        }}
+      />
     </main>
   );
 }
